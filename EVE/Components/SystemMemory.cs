@@ -1,10 +1,10 @@
 ﻿namespace EVE.Components
 {
-    public class Memory
+    public class SystemMemory
     {
         private byte[] _memory;
 
-        public Memory()
+        public SystemMemory()
         {
             _memory = new byte[256];
         }

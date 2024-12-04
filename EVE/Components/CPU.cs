@@ -1,19 +1,23 @@
-﻿namespace EVE.Components
+﻿using EVE.Core.Models;
+
+namespace EVE.Components
 {
     public class CPU
     {
         //private Memory _memory;
         private byte[] _memory;
-        private byte[] registers;
+        private byte[] _registers;
         private byte _pc;
         private byte _flags; // bit 0 = zero flag, bit 1 = carry flag
+        private Instruction _instruction;
 
         public CPU()
         {
             _memory = new byte[256];
-            registers = new byte[8];
+            _registers = new byte[8];
             _pc = 0;
             _flags = 0;
+            _instruction = new Instruction() { Opcode = 0, Operand = 0 };
         }
 
         public void LoadProgram(byte[] program)
@@ -29,82 +33,79 @@
             bool running = true;
             while (running)
             {
-                byte opcode = _memory[_pc];
-                byte operand = _memory[_pc + 1];
-                byte op1 = (byte)(operand >> 4);
-                byte op2 = (byte)(operand & 0x0F);
+                Fetch();
                 if (withDebug)
                 {
                     DumpRegisters();
                 }
 
                 _pc += 2;
-                switch (opcode)
+                switch (_instruction.Opcode)
                 {
                     case 0x01:  // LOAD r, n
-                        registers[op1] = op2;
+                        _registers[_instruction.HighOperand] = _instruction.LowOperand;
                         break;
                     case 0x02:  // MOV r1, r2
-                        registers[op1] = registers[op2];
+                        _registers[_instruction.HighOperand] = _registers[_instruction.LowOperand];
                         break;
                     case 0x03:  // ADD r1, r2
                         {
-                            int result = registers[op1] + registers[op2];
-                            registers[op1] = (byte)(result & 0xFF);
-                            _flags = (byte)((result > 255 ? 0x02 : 0) | (registers[op1] == 0 ? 0x01 : 0));
+                            int result = _registers[_instruction.HighOperand] + _registers[_instruction.LowOperand];
+                            _registers[_instruction.HighOperand] = (byte)(result & 0xFF);
+                            _flags = (byte)((result > 255 ? 0x02 : 0) | (_registers[_instruction.HighOperand] == 0 ? 0x01 : 0));
                         }
 
                         break;
                     case 0x04:  // SUB r1, r2
                         {
-                            int result = registers[op1] - registers[op2];
-                            registers[op1] = (byte)(result & 0xFF);
-                            _flags = (byte)((result < 0 ? 0x02 : 0) | (registers[op1] == 0 ? 0x01 : 0));
+                            int result = _registers[_instruction.HighOperand] - _registers[_instruction.LowOperand];
+                            _registers[_instruction.HighOperand] = (byte)(result & 0xFF);
+                            _flags = (byte)((result < 0 ? 0x02 : 0) | (_registers[_instruction.HighOperand] == 0 ? 0x01 : 0));
                         }
 
                         break;
                     case 0x05:  // AND r1, r2
-                        registers[op1] &= registers[op2];
-                        _flags = (byte)(registers[op1] == 0 ? 0x01 : 0);
+                        _registers[_instruction.HighOperand] &= _registers[_instruction.LowOperand];
+                        _flags = (byte)(_registers[_instruction.HighOperand] == 0 ? 0x01 : 0);
                         break;
                     case 0x06:  // OR r1, r2
-                        registers[op1] |= registers[op2];
-                        _flags = (byte)(registers[op1] == 0 ? 0x01 : 0);
+                        _registers[_instruction.HighOperand] |= _registers[_instruction.LowOperand];
+                        _flags = (byte)(_registers[_instruction.HighOperand] == 0 ? 0x01 : 0);
                         break;
                     case 0x07:  // XOR r1, r2
-                        registers[op1] ^= registers[op2];
-                        _flags = (byte)(registers[op1] == 0 ? 0x01 : 0);
+                        _registers[_instruction.HighOperand] ^= _registers[_instruction.LowOperand];
+                        _flags = (byte)(_registers[_instruction.HighOperand] == 0 ? 0x01 : 0);
                         break;
                     case 0x08:  // INC r
                         {
-                            int result = registers[op1] + 1;
-                            registers[op1] = (byte)(result & 0xFF);
-                            _flags = (byte)((result > 255 ? 0x02 : 0) | (registers[op1] == 0 ? 0x01 : 0));
+                            int result = _registers[_instruction.HighOperand] + 1;
+                            _registers[_instruction.HighOperand] = (byte)(result & 0xFF);
+                            _flags = (byte)((result > 255 ? 0x02 : 0) | (_registers[_instruction.LowOperand] == 0 ? 0x01 : 0));
                         }
 
                         break;
                     case 0x09:  // DEC r
                         {
-                            int result = registers[op1] - 1;
-                            registers[op1] = (byte)(result & 0xFF);
-                            _flags = (byte)((result < 0 ? 0x02 : 0) | (registers[op1] == 0 ? 0x01 : 0));
+                            int result = _registers[_instruction.HighOperand] - 1;
+                            _registers[_instruction.HighOperand] = (byte)(result & 0xFF);
+                            _flags = (byte)((result < 0 ? 0x02 : 0) | (_registers[_instruction.LowOperand] == 0 ? 0x01 : 0));
                         }
 
                         break;
                     case 0x0A:  // JMP addr
-                        _pc = operand;
+                        _pc = _instruction.Operand;
                         break;
                     case 0x0B:  // JZ addr
                         if ((_flags & 0x01) != 0)
                         {
-                            _pc = operand;
+                            _pc = _instruction.Operand;
                         }
 
                         break;
                     case 0x0C:  // JC addr
                         if ((_flags & 0x02) != 0)
                         {
-                            _pc = operand;
+                            _pc = _instruction.Operand;
                         }
 
                         break;
@@ -112,17 +113,23 @@
                         running = false;
                         break;
                     default:
-                        throw new InvalidOperationException($"Invalid opcode: {opcode}");
+                        throw new InvalidOperationException($"Invalid opcode: {_instruction.Opcode}");
                 }
             }
+        }
+
+        private void Fetch()
+        {
+            _instruction.Opcode = _memory[_pc];
+            _instruction.Operand = _memory[_pc + 1];
         }
 
         private void DumpRegisters()
         {
             Console.Write($"PC: {_pc} ");
-            for (int i = 0; i < registers.Length; i++)
+            for (int i = 0; i < _registers.Length; i++)
             {
-                Console.Write($"R{i}: {registers[i]:X2} ");
+                Console.Write($"R{i}: {_registers[i]:X2} ");
             }
 
             Console.Write($"Flags: {_flags:X2}");
