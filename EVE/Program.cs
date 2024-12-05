@@ -1,4 +1,5 @@
-﻿using EVE.Components;
+﻿global using EVE.Components;
+global using EVE.Models;
 
 namespace EVE
 {

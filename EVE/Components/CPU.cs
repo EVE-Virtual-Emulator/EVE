@@ -1,5 +1,4 @@
-﻿using EVE.Core.Models;
-using System.Reflection;
+﻿using System.Reflection;
 
 namespace EVE.Components
 {
