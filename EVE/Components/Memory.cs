@@ -1,12 +1,12 @@
 ﻿namespace EVE.Components
 {
-    public class SystemMemory
+    public class Memory
     {
         private byte[] _memory;
 
-        public SystemMemory()
+        public Memory()
         {
-            _memory = new byte[256];
+            _memory = new byte[UInt16.MaxValue];
         }
 
         public byte Read(int address)
