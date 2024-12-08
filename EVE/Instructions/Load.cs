@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace EVE.Instructions
 {
-    public class LoadInstruction : IInstruction
+    public class Load : IInstruction
     {
         public void Execute(CPU cpu, Instruction instruction)
         {
