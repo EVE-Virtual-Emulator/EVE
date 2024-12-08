@@ -4,37 +4,36 @@ namespace EVE.Components
 {
     public class CPU
     {
-        private Memory _memory;
-        private byte[] _registers;  // R0, R1, R2, R3
-        private ushort _pc;  // program counter
-        private ushort _ir;  // instruction register
-        private byte _flags; // bit 0 = zero flag, bit 1 = carry flag
-        private Instruction _instruction;
-        private bool _running;
+        public Memory Memory { get; set; }
+        public byte[] Registers { get; set; }  // R0, R1, R2, R3
+        public ushort PC { get; set; }  // program counter
+        public ushort IR { get; set; }  // instruction register
+        public byte Flags { get; set; } // bit 0 = zero flag, bit 1 = carry flag
+        public Instruction Instruction { get; set; }
+        public bool Running { get; set; }
 
         public CPU()
         {
-            _running = true;
-            _memory = new Memory();
-            _registers = new byte[4];
-            _pc = 0;
-            _ir = 0;
-            _flags = 0;
-            _instruction = new Instruction() { Opcode = 0, Operand = 0 };
+            Running = true;
+            Memory = new Memory();
+            Registers = new byte[4];
+            PC = 0;
+            IR = 0;
+            Flags = 0;
+            Instruction = new Instruction() { Opcode = 0, Operand = 0 };
         }
 
         public void LoadProgram(byte[] program)
         {
-            // TODO: Replace this with Memory.Write(Cartridge.Program)
             for (int i = 0; i < program.Length; i++)
             {
-                _memory.Write(i, program[i]);
+                Memory.Write(i, program[i]);
             }
         }
 
         public void Run(bool withDebug)
         {
-            while (_running)
+            while (Running)
             {
                 if (withDebug)
                 {
@@ -50,18 +49,18 @@ namespace EVE.Components
         #region Fetch-Decode-Execute
         private void Fetch()
         {
-            ushort opcode = (ushort)(_memory.Read(_pc) << 8);
-            ushort operand = _memory.Read(_pc + 1);
-            _ir = opcode |= operand;
-            _pc += 2;
+            ushort opcode = (ushort)(Memory.Read(PC) << 8);
+            ushort operand = Memory.Read(PC + 1);
+            IR = opcode |= operand;
+            PC += 2;
 
-            _instruction.Opcode = (byte)((_ir >> 8) & 0xFF);
-            _instruction.Operand = (byte)(_ir & 0xFF);
+            Instruction.Opcode = (byte)((IR >> 8) & 0xFF);
+            Instruction.Operand = (byte)(IR & 0xFF);
         }
 
         private string Decode()
         {
-            switch (_instruction.Opcode)
+            switch (Instruction.Opcode)
             {
                 case 0x01:  // LOAD r, n
                     return "Load";
@@ -90,7 +89,7 @@ namespace EVE.Components
                 case 0x0D:  // HALT
                     return "Halt";
                 default:
-                    throw new InvalidOperationException($"Invalid opcode: {_instruction.Opcode}");
+                    throw new InvalidOperationException($"Invalid opcode: {Instruction.Opcode}");
             }
         }
 
@@ -105,84 +104,84 @@ namespace EVE.Components
         #region Instructions
         private void Load()
         {
-            _registers[_instruction.HighOperand] = _instruction.LowOperand;
+            Registers[Instruction.HighOperand] = Instruction.LowOperand;
         }
 
         private void Move()
         {
-            _registers[_instruction.HighOperand] = _registers[_instruction.LowOperand];
+            Registers[Instruction.HighOperand] = Registers[Instruction.LowOperand];
         }
 
         private void Add()
         {
-            int result = _registers[_instruction.HighOperand] + _registers[_instruction.LowOperand];
-            _registers[_instruction.HighOperand] = (byte)(result & 0xFF);
-            _flags = (byte)((result > 255 ? 0x02 : 0) | (_registers[_instruction.HighOperand] == 0 ? 0x01 : 0));
+            byte result = (byte)(Registers[Instruction.HighOperand] + Registers[Instruction.LowOperand]);
+            Registers[Instruction.HighOperand] = (byte)(result & 0xFF);
+            Flags = (byte)((result > 255 ? 0x02 : 0) | (Registers[Instruction.HighOperand] == 0 ? 0x01 : 0));
         }
 
         private void Subtract()
         {
-            int result = _registers[_instruction.HighOperand] - _registers[_instruction.LowOperand];
-            _registers[_instruction.HighOperand] = (byte)(result & 0xFF);
-            _flags = (byte)((result < 0 ? 0x02 : 0) | (_registers[_instruction.HighOperand] == 0 ? 0x01 : 0));
+            byte result = (byte)(Registers[Instruction.HighOperand] - Registers[Instruction.LowOperand]);
+            Registers[Instruction.HighOperand] = (byte)(result & 0xFF);
+            Flags = (byte)((result < 0 ? 0x02 : 0) | (Registers[Instruction.HighOperand] == 0 ? 0x01 : 0));
         }
 
         private void And()
         {
-            _registers[_instruction.HighOperand] &= _registers[_instruction.LowOperand];
-            _flags = (byte)(_registers[_instruction.HighOperand] == 0 ? 0x01 : 0);
+            Registers[Instruction.HighOperand] &= Registers[Instruction.LowOperand];
+            Flags = (byte)(Registers[Instruction.HighOperand] == 0 ? 0x01 : 0);
         }
 
         private void Or()
         {
-            _registers[_instruction.HighOperand] |= _registers[_instruction.LowOperand];
-            _flags = (byte)(_registers[_instruction.HighOperand] == 0 ? 0x01 : 0);
+            Registers[Instruction.HighOperand] |= Registers[Instruction.LowOperand];
+            Flags = (byte)(Registers[Instruction.HighOperand] == 0 ? 0x01 : 0);
         }
 
         private void Xor()
         {
-            _registers[_instruction.HighOperand] ^= _registers[_instruction.LowOperand];
-            _flags = (byte)(_registers[_instruction.HighOperand] == 0 ? 0x01 : 0);
+            Registers[Instruction.HighOperand] ^= Registers[Instruction.LowOperand];
+            Flags = (byte)(Registers[Instruction.HighOperand] == 0 ? 0x01 : 0);
         }
 
         private void Increment()
         {
-            int result = _registers[_instruction.HighOperand] + 1;
-            _registers[_instruction.HighOperand] = (byte)(result & 0xFF);
-            _flags = (byte)((result > 255 ? 0x02 : 0) | (_registers[_instruction.LowOperand] == 0 ? 0x01 : 0));
+            int result = Registers[Instruction.HighOperand] + 1;
+            Registers[Instruction.HighOperand] = (byte)(result & 0xFF);
+            Flags = (byte)((result > 255 ? 0x02 : 0) | (Registers[Instruction.LowOperand] == 0 ? 0x01 : 0));
         }
 
         private void Decrement()
         {
-            int result = _registers[_instruction.HighOperand] - 1;
-            _registers[_instruction.HighOperand] = (byte)(result & 0xFF);
-            _flags = (byte)((result < 0 ? 0x02 : 0) | (_registers[_instruction.LowOperand] == 0 ? 0x01 : 0));
+            int result = Registers[Instruction.HighOperand] - 1;
+            Registers[Instruction.HighOperand] = (byte)(result & 0xFF);
+            Flags = (byte)((result < 0 ? 0x02 : 0) | (Registers[Instruction.LowOperand] == 0 ? 0x01 : 0));
         }
 
         private void Jump()
         {
-            _pc = _instruction.Operand;
+            PC = Instruction.Operand;
         }
 
         private void JumpZero()
         {
-            if ((_flags & 0x01) != 0)
+            if ((Flags & 0x01) != 0)
             {
-                _pc = _instruction.Operand;
+                PC = Instruction.Operand;
             }
         }
 
         private void JumpCarry()
         {
-            if ((_flags & 0x02) != 0)
+            if ((Flags & 0x02) != 0)
             {
-                _pc = _instruction.Operand;
+                PC = Instruction.Operand;
             }
         }
 
         private void Halt()
         {
-            _running = false;
+            Running = false;
         }
         #endregion
 
@@ -190,13 +189,13 @@ namespace EVE.Components
         #region Debugging
         private void DumpRegisters()
         {
-            Console.Write($"PC: {_pc} ");
-            for (int i = 0; i < _registers.Length; i++)
+            Console.Write($"PC: {PC} ");
+            for (int i = 0; i < Registers.Length; i++)
             {
-                Console.Write($"R{i}: {_registers[i]:X2} ");
+                Console.Write($"R{i}: {Registers[i]:X2} ");
             }
 
-            Console.Write($"Flags: {_flags:X2}");
+            Console.Write($"Flags: {Flags:X2}");
             Console.WriteLine();
         }
         #endregion

@@ -1,5 +1,12 @@
 ﻿namespace EVE.Components
 {
+    public enum MemorySegment
+    {
+        VRAM,
+        RAM,
+        ROM
+    }
+
     public class Memory
     {
         private byte[] _memory;
@@ -20,3 +27,5 @@
         }
     }
 }
+
+// TODO: Implement segments for VRAM, System RAM, and ROM

@@ -1,5 +1,6 @@
 ﻿global using EVE.Components;
 global using EVE.Models;
+using EVE.Providers;
 
 namespace EVE
 {
@@ -7,6 +8,8 @@ namespace EVE
     {
         public static void Main(string[] args)
         {
+            InstructionSetProvider instructionSetProvider = new InstructionSetProvider();
+
             byte[] program =
             {
                 0x01, 0x05,  // Load 5 into R0
