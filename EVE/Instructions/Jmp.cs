@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace EVE.Instructions
+﻿namespace EVE.Instructions
 {
-    internal class Jmp
+    public class Jmp : IInstruction
     {
+        public void Execute(Instruction instruction, Cpu cpu)
+        {
+            cpu.PC = instruction.Operand;
+        }
     }
 }

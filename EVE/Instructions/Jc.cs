@@ -1,12 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace EVE.Instructions
+﻿namespace EVE.Instructions
 {
-    internal class Jc
+    public class Jc : IInstruction
     {
+        public void Execute(Instruction instruction, Cpu cpu)
+        {
+            if ((cpu.Flags & 0x02) != 0)
+            {
+                cpu.PC = instruction.Operand;
+            }
+        }
     }
 }

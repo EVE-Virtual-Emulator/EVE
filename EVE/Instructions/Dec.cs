@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace EVE.Instructions
 {
-    internal class Dec
+    public class Dec : IInstruction
     {
+        public void Execute(Instruction instruction, Cpu cpu)
+        {
+            cpu.Registers[instruction.HighOperand] |= cpu.Registers[instruction.LowOperand];
+            cpu.Flags = (byte)(cpu.Registers[instruction.HighOperand] == 0 ? 0x01 : 0);
+        }
     }
 }

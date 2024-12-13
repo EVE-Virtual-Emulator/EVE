@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace EVE.Instructions
+﻿namespace EVE.Instructions
 {
     public interface IInstruction
-    {
-        void Execute(CPU cpu, Instruction instruction);
+    {        
+        void Execute(Instruction instruction, Cpu cpu);
     }
 }

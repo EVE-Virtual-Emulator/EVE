@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace EVE.Instructions
+﻿namespace EVE.Instructions
 {
     public class Load : IInstruction
     {
-        public void Execute(CPU cpu, Instruction instruction)
+        public void Execute(Instruction instruction, Cpu cpu)
         {
             cpu.Registers[instruction.HighOperand] = instruction.LowOperand;
         }

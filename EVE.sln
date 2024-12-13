@@ -5,6 +5,8 @@ VisualStudioVersion = 17.11.35327.3
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EVE", "EVE\EVE.csproj", "{976800C2-1106-4C0A-B2F6-BCA789B8DE9C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EVE.SharedKernel", "EVE.SharedKernel\EVE.SharedKernel.csproj", "{A85AC051-F602-4DB2-A945-5381F73BD51E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{976800C2-1106-4C0A-B2F6-BCA789B8DE9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{976800C2-1106-4C0A-B2F6-BCA789B8DE9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{976800C2-1106-4C0A-B2F6-BCA789B8DE9C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A85AC051-F602-4DB2-A945-5381F73BD51E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A85AC051-F602-4DB2-A945-5381F73BD51E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A85AC051-F602-4DB2-A945-5381F73BD51E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A85AC051-F602-4DB2-A945-5381F73BD51E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

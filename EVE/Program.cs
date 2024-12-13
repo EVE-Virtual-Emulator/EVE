@@ -19,7 +19,7 @@ namespace EVE
                 0x0D         // Halt
             };
 
-            CPU cpu = new CPU();
+            Cpu cpu = new Cpu();
             cpu.LoadProgram(program);
             cpu.Run(true);
             Console.ReadLine();

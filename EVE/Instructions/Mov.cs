@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace EVE.Instructions
+﻿namespace EVE.Instructions
 {
-    internal class Mov
+    public class Mov : IInstruction
     {
+        public void Execute(Instruction instruction, Cpu cpu)
+        {
+            cpu.Registers[instruction.HighOperand] = cpu.Registers[instruction.LowOperand];
+        }
     }
 }

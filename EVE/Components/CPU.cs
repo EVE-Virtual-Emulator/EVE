@@ -1,9 +1,23 @@
-﻿using System.Reflection;
+﻿using EVE.Instructions;
 
 namespace EVE.Components
 {
-    public class CPU
+    public class Cpu
     {
+        private static Cpu _instance;
+        public static Cpu Instance
+        {
+            get
+            {
+                if (_instance == null)
+                {
+                    _instance = new Cpu();
+                }
+
+                return _instance;
+            }
+        }
+
         public Memory Memory { get; set; }
         public byte[] Registers { get; set; }  // R0, R1, R2, R3
         public ushort PC { get; set; }  // program counter
@@ -12,7 +26,7 @@ namespace EVE.Components
         public Instruction Instruction { get; set; }
         public bool Running { get; set; }
 
-        public CPU()
+        public Cpu()
         {
             Running = true;
             Memory = new Memory();
@@ -65,11 +79,11 @@ namespace EVE.Components
                 case 0x01:  // LOAD r, n
                     return "Load";
                 case 0x02:  // MOV r1, r2
-                    return "Move";
+                    return "Mov";
                 case 0x03:  // ADD r1, r2
                     return "Add";
                 case 0x04:  // SUB r1, r2
-                    return "Subtract";
+                    return "Sub";
                 case 0x05:  // AND r1, r2
                     return "And";
                 case 0x06:  // OR r1, r2
@@ -77,15 +91,15 @@ namespace EVE.Components
                 case 0x07:  // XOR r1, r2
                     return "Xor";
                 case 0x08:  // INC r
-                    return "Increment";
+                    return "Inc";
                 case 0x09:  // DEC r
-                    return "Decrement";
+                    return "Dec";
                 case 0x0A:  // JMP addr
-                    return "Jump";
+                    return "Jmp";
                 case 0x0B:  // JZ addr
-                    return "JumpZero";
+                    return "Jz";
                 case 0x0C:  // JC addr
-                    return "JumpCarry";
+                    return "Jc";
                 case 0x0D:  // HALT
                     return "Halt";
                 default:
@@ -93,96 +107,100 @@ namespace EVE.Components
             }
         }
 
-        private void Execute(string methodName)
+        private void Execute(string className)
         {
-            Type type = GetType();
-            var method = type.GetMethod(methodName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-            method.Invoke(this, null);
+            //Type type = GetType();
+            //var method = type.GetMethod(methodName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+            //method.Invoke(this, null);
+
+            Type type = Type.GetType("EVE.Instructions." + className);
+            var instance = (IInstruction)Activator.CreateInstance(type);
+            instance.Execute(Instruction, this);
         }
         #endregion
 
         #region Instructions
-        private void Load()
-        {
-            Registers[Instruction.HighOperand] = Instruction.LowOperand;
-        }
+        //private void Load()
+        //{
+        //    Registers[Instruction.HighOperand] = Instruction.LowOperand;
+        //}
 
-        private void Move()
-        {
-            Registers[Instruction.HighOperand] = Registers[Instruction.LowOperand];
-        }
+        //private void Move()
+        //{
+        //    Registers[Instruction.HighOperand] = Registers[Instruction.LowOperand];
+        //}
 
-        private void Add()
-        {
-            byte result = (byte)(Registers[Instruction.HighOperand] + Registers[Instruction.LowOperand]);
-            Registers[Instruction.HighOperand] = (byte)(result & 0xFF);
-            Flags = (byte)((result > 255 ? 0x02 : 0) | (Registers[Instruction.HighOperand] == 0 ? 0x01 : 0));
-        }
+        //private void Add()
+        //{
+        //    byte result = (byte)(Registers[Instruction.HighOperand] + Registers[Instruction.LowOperand]);
+        //    Registers[Instruction.HighOperand] = (byte)(result & 0xFF);
+        //    Flags = (byte)((result > 255 ? 0x02 : 0) | (Registers[Instruction.HighOperand] == 0 ? 0x01 : 0));
+        //}
 
-        private void Subtract()
-        {
-            byte result = (byte)(Registers[Instruction.HighOperand] - Registers[Instruction.LowOperand]);
-            Registers[Instruction.HighOperand] = (byte)(result & 0xFF);
-            Flags = (byte)((result < 0 ? 0x02 : 0) | (Registers[Instruction.HighOperand] == 0 ? 0x01 : 0));
-        }
+        //private void Subtract()
+        //{
+        //    byte result = (byte)(Registers[Instruction.HighOperand] - Registers[Instruction.LowOperand]);
+        //    Registers[Instruction.HighOperand] = (byte)(result & 0xFF);
+        //    Flags = (byte)((result < 0 ? 0x02 : 0) | (Registers[Instruction.HighOperand] == 0 ? 0x01 : 0));
+        //}
 
-        private void And()
-        {
-            Registers[Instruction.HighOperand] &= Registers[Instruction.LowOperand];
-            Flags = (byte)(Registers[Instruction.HighOperand] == 0 ? 0x01 : 0);
-        }
+        //private void And()
+        //{
+        //    Registers[Instruction.HighOperand] &= Registers[Instruction.LowOperand];
+        //    Flags = (byte)(Registers[Instruction.HighOperand] == 0 ? 0x01 : 0);
+        //}
 
-        private void Or()
-        {
-            Registers[Instruction.HighOperand] |= Registers[Instruction.LowOperand];
-            Flags = (byte)(Registers[Instruction.HighOperand] == 0 ? 0x01 : 0);
-        }
+        //private void Or()
+        //{
+        //    Registers[Instruction.HighOperand] |= Registers[Instruction.LowOperand];
+        //    Flags = (byte)(Registers[Instruction.HighOperand] == 0 ? 0x01 : 0);
+        //}
 
-        private void Xor()
-        {
-            Registers[Instruction.HighOperand] ^= Registers[Instruction.LowOperand];
-            Flags = (byte)(Registers[Instruction.HighOperand] == 0 ? 0x01 : 0);
-        }
+        //private void Xor()
+        //{
+        //    Registers[Instruction.HighOperand] ^= Registers[Instruction.LowOperand];
+        //    Flags = (byte)(Registers[Instruction.HighOperand] == 0 ? 0x01 : 0);
+        //}
 
-        private void Increment()
-        {
-            int result = Registers[Instruction.HighOperand] + 1;
-            Registers[Instruction.HighOperand] = (byte)(result & 0xFF);
-            Flags = (byte)((result > 255 ? 0x02 : 0) | (Registers[Instruction.LowOperand] == 0 ? 0x01 : 0));
-        }
+        //private void Increment()
+        //{
+        //    int result = Registers[Instruction.HighOperand] + 1;
+        //    Registers[Instruction.HighOperand] = (byte)(result & 0xFF);
+        //    Flags = (byte)((result > 255 ? 0x02 : 0) | (Registers[Instruction.LowOperand] == 0 ? 0x01 : 0));
+        //}
 
-        private void Decrement()
-        {
-            int result = Registers[Instruction.HighOperand] - 1;
-            Registers[Instruction.HighOperand] = (byte)(result & 0xFF);
-            Flags = (byte)((result < 0 ? 0x02 : 0) | (Registers[Instruction.LowOperand] == 0 ? 0x01 : 0));
-        }
+        //private void Decrement()
+        //{
+        //    int result = Registers[Instruction.HighOperand] - 1;
+        //    Registers[Instruction.HighOperand] = (byte)(result & 0xFF);
+        //    Flags = (byte)((result < 0 ? 0x02 : 0) | (Registers[Instruction.LowOperand] == 0 ? 0x01 : 0));
+        //}
 
-        private void Jump()
-        {
-            PC = Instruction.Operand;
-        }
+        //private void Jump()
+        //{
+        //    PC = Instruction.Operand;
+        //}
 
-        private void JumpZero()
-        {
-            if ((Flags & 0x01) != 0)
-            {
-                PC = Instruction.Operand;
-            }
-        }
+        //private void JumpZero()
+        //{
+        //    if ((Flags & 0x01) != 0)
+        //    {
+        //        PC = Instruction.Operand;
+        //    }
+        //}
 
-        private void JumpCarry()
-        {
-            if ((Flags & 0x02) != 0)
-            {
-                PC = Instruction.Operand;
-            }
-        }
+        //private void JumpCarry()
+        //{
+        //    if ((Flags & 0x02) != 0)
+        //    {
+        //        PC = Instruction.Operand;
+        //    }
+        //}
 
-        private void Halt()
-        {
-            Running = false;
-        }
+        //private void Halt()
+        //{
+        //    Running = false;
+        //}
         #endregion
 
 
