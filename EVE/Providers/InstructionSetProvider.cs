@@ -6,19 +6,19 @@ namespace EVE.Providers
 {
     public class InstructionSetProvider
     {
-        public Dictionary<byte, string> ByteNeumonicPair { get; set; }
+        public Dictionary<byte, string> MachineCodeMnemonicPair { get; set; }
         public List<IInstructionHandler> InstructionHandlers { get; set; }
 
         public InstructionSetProvider()
         {
-            ByteNeumonicPair = GetInstructionMap();
+            MachineCodeMnemonicPair = GetInstructionMap();
             InstructionHandlers = GetInstructionHandlers();
         }
 
         public void PrintInstructionSet()
         {
             StringBuilder sb = new StringBuilder();
-            foreach (var item in ByteNeumonicPair)
+            foreach (var item in MachineCodeMnemonicPair)
             {
                 sb.AppendLine($"{item.Key} : {item.Value}");
             }
@@ -36,7 +36,8 @@ namespace EVE.Providers
                 var parts = opcode.Split(',');
                 var opcodeValue = parts[0].Trim().Substring(2);
                 var neumonic = parts[1].Trim();
-                byteNeumonicPair.Add(byte.Parse(opcodeValue, NumberStyles.HexNumber), neumonic.ToLower());
+                neumonic = neumonic.Substring(0, 1).ToUpper() + neumonic.Substring(1).ToLower();
+                byteNeumonicPair.Add(byte.Parse(opcodeValue, NumberStyles.HexNumber), neumonic);
             }
 
             return byteNeumonicPair;

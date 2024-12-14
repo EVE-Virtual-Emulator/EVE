@@ -63,37 +63,15 @@ namespace EVE.Components
 
         private string Decode()
         {
-            switch (Instruction.Opcode)
+            foreach (var pair in _instructionSetProvider.MachineCodeMnemonicPair)
             {
-                case 0x01:  // LOAD r, n
-                    return "Load";
-                case 0x02:  // MOV r1, r2
-                    return "Mov";
-                case 0x03:  // ADD r1, r2
-                    return "Add";
-                case 0x04:  // SUB r1, r2
-                    return "Sub";
-                case 0x05:  // AND r1, r2
-                    return "And";
-                case 0x06:  // OR r1, r2
-                    return "Or";
-                case 0x07:  // XOR r1, r2
-                    return "Xor";
-                case 0x08:  // INC r
-                    return "Inc";
-                case 0x09:  // DEC r
-                    return "Dec";
-                case 0x0A:  // JMP addr
-                    return "Jmp";
-                case 0x0B:  // JZ addr
-                    return "Jz";
-                case 0x0C:  // JC addr
-                    return "Jc";
-                case 0x0D:  // HALT
-                    return "Halt";
-                default:
-                    throw new InvalidOperationException($"Invalid opcode: {Instruction.Opcode}");
+                if (pair.Key == Instruction.Opcode)
+                {
+                    return pair.Value;
+                }
             }
+
+            return string.Empty;
         }
 
         private void Execute(string className)
