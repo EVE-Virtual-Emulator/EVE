@@ -1,5 +1,5 @@
 ﻿global using EVE.Components;
-global using EVE.Models;
+global using EVE.SharedKernel;
 using EVE.Providers;
 
 namespace EVE
@@ -19,7 +19,7 @@ namespace EVE
                 0x0D         // Halt
             };
 
-            Cpu cpu = new Cpu();
+            ICpu cpu = new Cpu();
             cpu.LoadProgram(program);
             cpu.Run(true);
             Console.ReadLine();

@@ -2,10 +2,10 @@
 
 namespace EVE.Components
 {
-    public class Cpu
+    public class Cpu : ICpu
     {
-        private static Cpu _instance;
-        public static Cpu Instance
+        private static ICpu _instance;
+        public static ICpu Instance
         {
             get
             {
@@ -20,9 +20,10 @@ namespace EVE.Components
 
         public Memory Memory { get; set; }
         public byte[] Registers { get; set; }  // R0, R1, R2, R3
-        public ushort PC { get; set; }  // program counter
-        public ushort IR { get; set; }  // instruction register
+        public ushort Pc { get; set; }  // program counter
+        public ushort Ir { get; set; }  // instruction register
         public byte Flags { get; set; } // bit 0 = zero flag, bit 1 = carry flag
+        public byte Sp { get; set; }  // stack pointer
         public Instruction Instruction { get; set; }
         public bool Running { get; set; }
 
@@ -31,8 +32,8 @@ namespace EVE.Components
             Running = true;
             Memory = new Memory();
             Registers = new byte[4];
-            PC = 0;
-            IR = 0;
+            Pc = 0;
+            Ir = 0;
             Flags = 0;
             Instruction = new Instruction() { Opcode = 0, Operand = 0 };
         }
@@ -63,13 +64,13 @@ namespace EVE.Components
         #region Fetch-Decode-Execute
         private void Fetch()
         {
-            ushort opcode = (ushort)(Memory.Read(PC) << 8);
-            ushort operand = Memory.Read(PC + 1);
-            IR = opcode |= operand;
-            PC += 2;
+            ushort opcode = (ushort)(Memory.Read(Pc) << 8);
+            ushort operand = Memory.Read(Pc + 1);
+            Ir = opcode |= operand;
+            Pc += 2;
 
-            Instruction.Opcode = (byte)((IR >> 8) & 0xFF);
-            Instruction.Operand = (byte)(IR & 0xFF);
+            Instruction.Opcode = (byte)((Ir >> 8) & 0xFF);
+            Instruction.Operand = (byte)(Ir & 0xFF);
         }
 
         private string Decode()
@@ -109,105 +110,18 @@ namespace EVE.Components
 
         private void Execute(string className)
         {
-            //Type type = GetType();
-            //var method = type.GetMethod(methodName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-            //method.Invoke(this, null);
+            // TODO: Use reflection to read in all compiled instructions in DLLs stored in ISA directory.
 
             Type type = Type.GetType("EVE.Instructions." + className);
-            var instance = (IInstruction)Activator.CreateInstance(type);
+            var instance = (IInstructionHandler)Activator.CreateInstance(type);
             instance.Execute(Instruction, this);
         }
         #endregion
 
-        #region Instructions
-        //private void Load()
-        //{
-        //    Registers[Instruction.HighOperand] = Instruction.LowOperand;
-        //}
-
-        //private void Move()
-        //{
-        //    Registers[Instruction.HighOperand] = Registers[Instruction.LowOperand];
-        //}
-
-        //private void Add()
-        //{
-        //    byte result = (byte)(Registers[Instruction.HighOperand] + Registers[Instruction.LowOperand]);
-        //    Registers[Instruction.HighOperand] = (byte)(result & 0xFF);
-        //    Flags = (byte)((result > 255 ? 0x02 : 0) | (Registers[Instruction.HighOperand] == 0 ? 0x01 : 0));
-        //}
-
-        //private void Subtract()
-        //{
-        //    byte result = (byte)(Registers[Instruction.HighOperand] - Registers[Instruction.LowOperand]);
-        //    Registers[Instruction.HighOperand] = (byte)(result & 0xFF);
-        //    Flags = (byte)((result < 0 ? 0x02 : 0) | (Registers[Instruction.HighOperand] == 0 ? 0x01 : 0));
-        //}
-
-        //private void And()
-        //{
-        //    Registers[Instruction.HighOperand] &= Registers[Instruction.LowOperand];
-        //    Flags = (byte)(Registers[Instruction.HighOperand] == 0 ? 0x01 : 0);
-        //}
-
-        //private void Or()
-        //{
-        //    Registers[Instruction.HighOperand] |= Registers[Instruction.LowOperand];
-        //    Flags = (byte)(Registers[Instruction.HighOperand] == 0 ? 0x01 : 0);
-        //}
-
-        //private void Xor()
-        //{
-        //    Registers[Instruction.HighOperand] ^= Registers[Instruction.LowOperand];
-        //    Flags = (byte)(Registers[Instruction.HighOperand] == 0 ? 0x01 : 0);
-        //}
-
-        //private void Increment()
-        //{
-        //    int result = Registers[Instruction.HighOperand] + 1;
-        //    Registers[Instruction.HighOperand] = (byte)(result & 0xFF);
-        //    Flags = (byte)((result > 255 ? 0x02 : 0) | (Registers[Instruction.LowOperand] == 0 ? 0x01 : 0));
-        //}
-
-        //private void Decrement()
-        //{
-        //    int result = Registers[Instruction.HighOperand] - 1;
-        //    Registers[Instruction.HighOperand] = (byte)(result & 0xFF);
-        //    Flags = (byte)((result < 0 ? 0x02 : 0) | (Registers[Instruction.LowOperand] == 0 ? 0x01 : 0));
-        //}
-
-        //private void Jump()
-        //{
-        //    PC = Instruction.Operand;
-        //}
-
-        //private void JumpZero()
-        //{
-        //    if ((Flags & 0x01) != 0)
-        //    {
-        //        PC = Instruction.Operand;
-        //    }
-        //}
-
-        //private void JumpCarry()
-        //{
-        //    if ((Flags & 0x02) != 0)
-        //    {
-        //        PC = Instruction.Operand;
-        //    }
-        //}
-
-        //private void Halt()
-        //{
-        //    Running = false;
-        //}
-        #endregion
-
-
         #region Debugging
         private void DumpRegisters()
         {
-            Console.Write($"PC: {PC} ");
+            Console.Write($"PC: {Pc} ");
             for (int i = 0; i < Registers.Length; i++)
             {
                 Console.Write($"R{i}: {Registers[i]:X2} ");

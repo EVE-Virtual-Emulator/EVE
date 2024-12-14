@@ -1,8 +1,8 @@
 ﻿namespace EVE.Instructions
 {
-    public class Load : IInstruction
+    public class Load : IInstructionHandler
     {
-        public void Execute(Instruction instruction, Cpu cpu)
+        public void Execute(Instruction instruction, ICpu cpu)
         {
             cpu.Registers[instruction.HighOperand] = instruction.LowOperand;
         }

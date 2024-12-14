@@ -1,8 +1,8 @@
 ﻿namespace EVE.Instructions
 {
-    public class Halt : IInstruction
+    public class Halt : IInstructionHandler
     {
-        public void Execute(Instruction instruction, Cpu cpu)
+        public void Execute(Instruction instruction, ICpu cpu)
         {
             cpu.Running = false;
         }

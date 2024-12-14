@@ -1,10 +1,10 @@
 ﻿namespace EVE.Instructions
 {
-    public class Jmp : IInstruction
+    public class Jmp : IInstructionHandler
     {
-        public void Execute(Instruction instruction, Cpu cpu)
+        public void Execute(Instruction instruction, ICpu cpu)
         {
-            cpu.PC = instruction.Operand;
+            cpu.Pc = instruction.Operand;
         }
     }
 }

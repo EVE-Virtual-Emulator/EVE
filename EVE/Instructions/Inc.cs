@@ -1,8 +1,8 @@
 ﻿namespace EVE.Instructions
 {
-    public class Inc : IInstruction
+    public class Inc : IInstructionHandler
     {
-        public void Execute(Instruction instruction, Cpu cpu)
+        public void Execute(Instruction instruction, ICpu cpu)
         {
             int result = cpu.Registers[instruction.HighOperand] + 1;
             cpu.Registers[instruction.HighOperand] = (byte)(result & 0xFF);

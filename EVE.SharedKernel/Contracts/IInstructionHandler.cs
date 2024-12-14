@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EVE.SharedKernel.Contracts
+namespace EVE.SharedKernel
 {
-    public interface IInstruction
+    public interface IInstructionHandler
     {
-        void Execute(IInstruction instruction, ICpu cpu);
+        void Execute(Instruction instruction, ICpu cpu);
     }
 }

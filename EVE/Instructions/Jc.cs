@@ -1,12 +1,12 @@
 ﻿namespace EVE.Instructions
 {
-    public class Jc : IInstruction
+    public class Jc : IInstructionHandler
     {
-        public void Execute(Instruction instruction, Cpu cpu)
+        public void Execute(Instruction instruction, ICpu cpu)
         {
             if ((cpu.Flags & 0x02) != 0)
             {
-                cpu.PC = instruction.Operand;
+                cpu.Pc = instruction.Operand;
             }
         }
     }
