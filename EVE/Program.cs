@@ -8,8 +8,6 @@ namespace EVE
     {
         public static void Main(string[] args)
         {
-            InstructionSetProvider instructionSetProvider = new InstructionSetProvider();
-
             byte[] program =
             {
                 0x01, 0x05,  // Load 5 into R0
@@ -19,7 +17,7 @@ namespace EVE
                 0x0D         // Halt
             };
 
-            ICpu cpu = new Cpu();
+            ICpu cpu = new Cpu(new InstructionSetProvider());
             cpu.LoadProgram(program);
             cpu.Run(true);
             Console.ReadLine();

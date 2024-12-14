@@ -1,33 +1,21 @@
-﻿using EVE.Instructions;
+﻿using EVE.Providers;
 
 namespace EVE.Components
 {
     public class Cpu : ICpu
     {
-        private static ICpu _instance;
-        public static ICpu Instance
-        {
-            get
-            {
-                if (_instance == null)
-                {
-                    _instance = new Cpu();
-                }
-
-                return _instance;
-            }
-        }
-
         public Memory Memory { get; set; }
-        public byte[] Registers { get; set; }  // R0, R1, R2, R3
-        public ushort Pc { get; set; }  // program counter
-        public ushort Ir { get; set; }  // instruction register
+        public Instruction Instruction { get; set; }  // opcode and operand (high byte is opcode, low byte is operand)
+        public byte[] Registers { get; set; }  // R0, R1, R2, R3 (general purpose registers)
+        public ushort Pc { get; set; }  // program counter (points to next instruction)
+        public ushort Ir { get; set; }  // instruction register (holds current instruction)
+        public byte Sp { get; set; }  // stack pointer (points to top of stack, where stack hold address of instruction for RET opcode)
         public byte Flags { get; set; } // bit 0 = zero flag, bit 1 = carry flag
-        public byte Sp { get; set; }  // stack pointer
-        public Instruction Instruction { get; set; }
         public bool Running { get; set; }
 
-        public Cpu()
+        private InstructionSetProvider _instructionSetProvider;
+
+        public Cpu(InstructionSetProvider instructionSetProvider)
         {
             Running = true;
             Memory = new Memory();
@@ -36,6 +24,7 @@ namespace EVE.Components
             Ir = 0;
             Flags = 0;
             Instruction = new Instruction() { Opcode = 0, Operand = 0 };
+            _instructionSetProvider = instructionSetProvider;
         }
 
         public void LoadProgram(byte[] program)
@@ -61,7 +50,6 @@ namespace EVE.Components
             }
         }
 
-        #region Fetch-Decode-Execute
         private void Fetch()
         {
             ushort opcode = (ushort)(Memory.Read(Pc) << 8);
@@ -110,15 +98,21 @@ namespace EVE.Components
 
         private void Execute(string className)
         {
-            // TODO: Use reflection to read in all compiled instructions in DLLs stored in ISA directory.
+            
+            foreach (var instructionHandler in _instructionSetProvider.InstructionHandlers)
+            {
+                if (instructionHandler.GetType().Name == className)
+                {
+                    instructionHandler.Execute(Instruction, this);
+                    return;
+                }
+            }
 
             Type type = Type.GetType("EVE.Instructions." + className);
             var instance = (IInstructionHandler)Activator.CreateInstance(type);
             instance.Execute(Instruction, this);
         }
-        #endregion
 
-        #region Debugging
         private void DumpRegisters()
         {
             Console.Write($"PC: {Pc} ");
@@ -130,6 +124,5 @@ namespace EVE.Components
             Console.Write($"Flags: {Flags:X2}");
             Console.WriteLine();
         }
-        #endregion
     }
 }

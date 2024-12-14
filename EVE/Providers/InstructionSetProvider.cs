@@ -1,18 +1,32 @@
 ﻿using System.Text;
 using System.Globalization;
+using System.Reflection;
 
 namespace EVE.Providers
 {
     public class InstructionSetProvider
     {
         public Dictionary<byte, string> ByteNeumonicPair { get; set; }
+        public List<IInstructionHandler> InstructionHandlers { get; set; }
 
         public InstructionSetProvider()
         {
-            ByteNeumonicPair = InitializeInstructionSet();
+            ByteNeumonicPair = GetInstructionMap();
+            InstructionHandlers = GetInstructionHandlers();
         }
 
-        private Dictionary<byte, string> InitializeInstructionSet()
+        public void PrintInstructionSet()
+        {
+            StringBuilder sb = new StringBuilder();
+            foreach (var item in ByteNeumonicPair)
+            {
+                sb.AppendLine($"{item.Key} : {item.Value}");
+            }
+
+            Console.WriteLine(sb.ToString());
+        }
+
+        private Dictionary<byte, string> GetInstructionMap()
         {
             
             string[] opcodes = File.ReadAllLines("ISA/instructionset.map");
@@ -28,15 +42,19 @@ namespace EVE.Providers
             return byteNeumonicPair;
         }
 
-        public void PrintInstructionSet()
+        private List<IInstructionHandler> GetInstructionHandlers()
         {
-            StringBuilder sb = new StringBuilder();
-            foreach (var item in ByteNeumonicPair)
+            List<IInstructionHandler> instructionHandlers = new();
+            var dllPaths = Directory.GetFiles("ISA", "*.dll");
+            foreach (var dllPath in dllPaths)
             {
-                sb.AppendLine($"{item.Key} : {item.Value}");
+                var assembly = Assembly.LoadFrom(dllPath);
+                var type = assembly.GetType();
+                var instance = Activator.CreateInstance(type);
+                instructionHandlers.Add((IInstructionHandler)instance);
             }
-            
-            Console.WriteLine(sb.ToString());
+
+            return instructionHandlers;
         }
     }
 }
