@@ -14,6 +14,7 @@ namespace EVE
                 0x01, 0x17,  // Load 7 into R1
                 0x03, 0x01,  // Add R0 and R1 and store in R0
                 0x08, 0x00,  // Increment R0
+                0x0E, 0x00,  // No operation
                 0x0D         // Halt
             };
 

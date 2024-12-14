@@ -50,9 +50,15 @@ namespace EVE.Providers
             foreach (var dllPath in dllPaths)
             {
                 var assembly = Assembly.LoadFrom(dllPath);
-                var type = assembly.GetType();
-                var instance = Activator.CreateInstance(type);
-                instructionHandlers.Add((IInstructionHandler)instance);
+                var types = assembly.GetTypes();
+                foreach (var type in types)
+                {
+                    if (type.GetInterfaces().Contains(typeof(IInstructionHandler)))
+                    {
+                        var instance = (IInstructionHandler)Activator.CreateInstance(type);
+                        instructionHandlers.Add(instance);
+                    }
+                }
             }
 
             return instructionHandlers;

@@ -9,7 +9,7 @@ namespace EVE.Components
         public byte[] Registers { get; set; }  // R0, R1, R2, R3 (general purpose registers)
         public ushort Pc { get; set; }  // program counter (points to next instruction)
         public ushort Ir { get; set; }  // instruction register (holds current instruction)
-        public byte Sp { get; set; }  // stack pointer (points to top of stack, where stack hold address of instruction for RET opcode)
+        public ushort Sp { get; set; }  // stack pointer (points to top of stack, where stack hold address of instruction for RET opcode)
         public byte Flags { get; set; } // bit 0 = zero flag, bit 1 = carry flag
         public bool Running { get; set; }
 

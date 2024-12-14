@@ -11,12 +11,11 @@
 
         public EVEProgram Load()
         {
-            byte[] file = File.ReadAllBytes(_path);
             return new EVEProgram()
             {
-                Name = string.Empty,
-                Data = file,
-                Size = file.Length
+                Name = GetProgramName(),
+                Data = GetProgramData(),
+                Size = GetProgramSize()
             };
         }
 

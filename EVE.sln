@@ -5,7 +5,11 @@ VisualStudioVersion = 17.11.35327.3
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EVE", "EVE\EVE.csproj", "{976800C2-1106-4C0A-B2F6-BCA789B8DE9C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EVE.SharedKernel", "EVE.SharedKernel\EVE.SharedKernel.csproj", "{A85AC051-F602-4DB2-A945-5381F73BD51E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EVE.SharedKernel", "EVE.SharedKernel\EVE.SharedKernel.csproj", "{A85AC051-F602-4DB2-A945-5381F73BD51E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Plugins", "Plugins", "{AB67AF8C-52DB-4BAF-9E7D-3249C4D1972F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EVE.TestPlugins", "EVE.TestPlugins\EVE.TestPlugins.csproj", "{16703CD5-1CE8-4479-AB3C-A3DFB95B27DF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,9 +25,16 @@ Global
 		{A85AC051-F602-4DB2-A945-5381F73BD51E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A85AC051-F602-4DB2-A945-5381F73BD51E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A85AC051-F602-4DB2-A945-5381F73BD51E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{16703CD5-1CE8-4479-AB3C-A3DFB95B27DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{16703CD5-1CE8-4479-AB3C-A3DFB95B27DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{16703CD5-1CE8-4479-AB3C-A3DFB95B27DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{16703CD5-1CE8-4479-AB3C-A3DFB95B27DF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{16703CD5-1CE8-4479-AB3C-A3DFB95B27DF} = {AB67AF8C-52DB-4BAF-9E7D-3249C4D1972F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8254B8CB-16BA-495C-AAEE-F6B14FA5593B}
