@@ -102,6 +102,3 @@ namespace EVE.Engine.Components
         }
     }
 }
-
-// TODO: Implement segments for VRAM, System RAM, and ROM, including a stack  segment for the stack pointer
-// Stack segment should be at the top of the memory space in System RAM
