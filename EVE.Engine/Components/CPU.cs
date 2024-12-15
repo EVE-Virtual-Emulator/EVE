@@ -5,7 +5,7 @@ namespace EVE.Engine.Components
 {
     public class Cpu : ICpu
     {
-        public Memory Memory { get; set; }
+        public IMemory Memory { get; set; }
         public Instruction Instruction { get; set; }  // opcode and operand (high byte is opcode, low byte is operand)
         public byte[] Registers { get; set; }  // R0, R1, R2, R3 (general purpose registers)
         public ushort Pc { get; set; }  // program counter (points to next instruction)
@@ -16,25 +16,16 @@ namespace EVE.Engine.Components
 
         private InstructionSetProvider _instructionSetProvider;
 
-        public Cpu(InstructionSetProvider instructionSetProvider)
+        public Cpu(IMemory memory, InstructionSetProvider instructionSetProvider)
         {
             Running = true;
-            Memory = new Memory();
+            Memory = memory;
             Registers = new byte[4];
             Pc = MemoryRegion.ROM_START;
             Ir = 0;
             Flags = 0;
             Instruction = new Instruction() { Opcode = 0, Operand = 0 };
             _instructionSetProvider = instructionSetProvider;
-        }
-
-        public void LoadProgram(byte[] program)
-        {
-            for (int i = 0; i < program.Length; i++)
-            {
-                var address = (ushort)(i + MemoryRegion.ROM_START);
-                Memory.WriteROM(address, program[i]);
-            }
         }
 
         public void Run(bool withDebug)

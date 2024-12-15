@@ -10,7 +10,6 @@
         byte Flags { get; set; }
         bool Running { get; set; }
 
-        void LoadProgram(byte[] program);
         void Run(bool withDebug);
     }
 }

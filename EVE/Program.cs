@@ -18,9 +18,12 @@ namespace EVE
                 0x0D         // Halt
             };
 
-            ICpu cpu = new Cpu(new InstructionSetProvider());
-            cpu.LoadProgram(program);
+            IMemory memory = new Memory();
+            memory.LoadProgram(program);
+
+            ICpu cpu = new Cpu(memory, new InstructionSetProvider());
             cpu.Run(true);
+
             Console.ReadLine();
         }
     }
