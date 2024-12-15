@@ -104,3 +104,5 @@ namespace EVE.Components
         }
     }
 }
+
+// TODO: Implement Bus component to connect CPU and Memory components.  Instructions will be transferred on the Bus.
