@@ -1,4 +1,6 @@
-﻿namespace EVE.Providers
+﻿using EVE.SharedKernel;
+
+namespace EVE.Engine.Providers
 {
     public class ProgramProvider
     {

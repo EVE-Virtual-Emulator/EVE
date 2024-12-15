@@ -1,6 +1,6 @@
-﻿global using EVE.Components;
+﻿global using EVE.Engine.Components;
+global using EVE.Engine.Providers;
 global using EVE.SharedKernel;
-using EVE.Providers;
 
 namespace EVE
 {

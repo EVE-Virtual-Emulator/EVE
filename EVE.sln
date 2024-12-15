@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EVE.SharedKernel", "EVE.Sha
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Plugins", "Plugins", "{AB67AF8C-52DB-4BAF-9E7D-3249C4D1972F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EVE.TestPlugins", "EVE.TestPlugins\EVE.TestPlugins.csproj", "{16703CD5-1CE8-4479-AB3C-A3DFB95B27DF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EVE.TestPlugins", "EVE.TestPlugins\EVE.TestPlugins.csproj", "{16703CD5-1CE8-4479-AB3C-A3DFB95B27DF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EVE.Engine", "EVE.Engine\EVE.Engine.csproj", "{76C69943-9B10-4F70-AFDA-794686BF048B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,6 +31,10 @@ Global
 		{16703CD5-1CE8-4479-AB3C-A3DFB95B27DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{16703CD5-1CE8-4479-AB3C-A3DFB95B27DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{16703CD5-1CE8-4479-AB3C-A3DFB95B27DF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{76C69943-9B10-4F70-AFDA-794686BF048B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{76C69943-9B10-4F70-AFDA-794686BF048B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{76C69943-9B10-4F70-AFDA-794686BF048B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{76C69943-9B10-4F70-AFDA-794686BF048B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,4 +1,6 @@
-﻿namespace EVE.Instructions
+﻿using EVE.SharedKernel;
+
+namespace EVE.Engine.Instructions
 {
     public class Or : IInstructionHandler
     {

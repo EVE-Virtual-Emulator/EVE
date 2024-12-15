@@ -1,8 +1,9 @@
 ﻿using System.Text;
 using System.Globalization;
 using System.Reflection;
+using EVE.SharedKernel;
 
-namespace EVE.Providers
+namespace EVE.Engine.Providers
 {
     public class InstructionSetProvider
     {

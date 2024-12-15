@@ -1,4 +1,6 @@
-﻿namespace EVE.Components
+﻿using EVE.SharedKernel;
+
+namespace EVE.Engine.Components
 {
     public class Memory : IMemory
     {

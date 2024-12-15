@@ -1,10 +1,12 @@
-﻿namespace EVE.Instructions
+﻿using EVE.SharedKernel;
+
+namespace EVE.Engine.Instructions
 {
-    public class Jc : IInstructionHandler
+    public class Jz : IInstructionHandler
     {
         public void Execute(Instruction instruction, ICpu cpu)
         {
-            if ((cpu.Flags & 0x02) != 0)
+            if ((cpu.Flags & 0x01) != 0)
             {
                 cpu.Pc = instruction.Operand;
             }

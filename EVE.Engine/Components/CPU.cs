@@ -1,6 +1,7 @@
-﻿using EVE.Providers;
+﻿using EVE.SharedKernel;
+using EVE.Engine.Providers;
 
-namespace EVE.Components
+namespace EVE.Engine.Components
 {
     public class Cpu : ICpu
     {
