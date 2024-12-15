@@ -52,7 +52,7 @@ namespace EVE.Engine.Components
                 case int n when (n >= (int)MemoryRegion.VRAM_START && n <= (int)MemoryRegion.VRAM_END):
                     WriteVRAM(address, value);
                     break;
-                case int n when (n >= (int)MemoryRegion.STACK_START && n <= (int)MemoryRegion.STACK_END):
+                case int n when (n <= (int)MemoryRegion.STACK_START && n >= (int)MemoryRegion.STACK_END):
                     WriteStack(address, value);
                     break;
                 default:

@@ -93,6 +93,8 @@ namespace EVE.Engine.Components
                 Console.Write($"R{i}: {Registers[i]:X2} ");
             }
 
+            Console.Write($"SP: {Sp:X2} ");
+
             Console.Write($"Flags: {Flags:X2}");
             Console.WriteLine();
         }

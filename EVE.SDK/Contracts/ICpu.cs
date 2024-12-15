@@ -2,6 +2,7 @@
 {
     public interface ICpu
     {
+        IMemory Memory { get; set; }
         Instruction Instruction { get; set; }
         byte[] Registers { get; set; }
         ushort Pc { get; set; }
