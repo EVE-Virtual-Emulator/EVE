@@ -11,19 +11,19 @@ namespace EVE.Engine.Components
             _memory = new byte[UInt16.MaxValue];
         }
 
-        public ushort PopStack()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void PushStack(ushort address)
-        {
-            throw new NotImplementedException();
-        }
-
         public byte Read(int address)
         {
             return _memory[address];
+        }
+
+        public void Write(int address, byte value)
+        {
+            if (address >= (int)MemoryRegion.ROM_START)
+            {
+                throw new OutOfMemoryException("Cannot write to ROM");
+            }
+
+            _memory[address] = value;
         }
 
         public byte ReadROM(int address)
@@ -46,16 +46,6 @@ namespace EVE.Engine.Components
             throw new NotImplementedException();
         }
 
-        public void Write(int address, byte value)
-        {
-            if (address >= (int)MemoryRegion.ROM_START)
-            {
-                throw new OutOfMemoryException("Cannot write to ROM");
-            }
-
-            _memory[address] = value;
-        }
-
         public void WriteROM(int address, byte value)
         {
             if (address >= (int)MemoryRegion.ROM_START && address <= (int)MemoryRegion.ROM_END)
@@ -70,6 +60,16 @@ namespace EVE.Engine.Components
         }
 
         public void WriteVRAM(int address, byte value)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ushort PopStack()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void PushStack(ushort address)
         {
             throw new NotImplementedException();
         }

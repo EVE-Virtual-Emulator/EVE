@@ -21,7 +21,7 @@ namespace EVE.Engine.Components
             Running = true;
             Memory = new Memory();
             Registers = new byte[4];
-            Pc = 0x4000;
+            Pc = MemoryRegion.ROM_START;
             Ir = 0;
             Flags = 0;
             Instruction = new Instruction() { Opcode = 0, Operand = 0 };
