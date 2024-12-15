@@ -23,6 +23,7 @@ namespace EVE.Engine.Components
             Registers = new byte[4];
             Pc = MemoryRegion.ROM_START;
             Ir = 0;
+            Sp = MemoryRegion.STACK_START;
             Flags = 0;
             Instruction = new Instruction() { Opcode = 0, Operand = 0 };
             _instructionSetProvider = instructionSetProvider;

@@ -11,9 +11,9 @@ namespace EVE.Engine.Providers
             _path = path;
         }
 
-        public EVEProgram Load()
+        public EveProgram Load()
         {
-            return new EVEProgram()
+            return new EveProgram()
             {
                 Name = GetProgramName(),
                 Data = GetProgramData(),
