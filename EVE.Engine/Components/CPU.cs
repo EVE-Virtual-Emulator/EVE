@@ -1,4 +1,4 @@
-﻿using EVE.SharedKernel;
+﻿using EVE.SDK;
 using EVE.Engine.Providers;
 
 namespace EVE.Engine.Components
@@ -88,7 +88,7 @@ namespace EVE.Engine.Components
                 }
             }
 
-            Type type = Type.GetType("EVE.Instructions." + className);
+            Type type = Type.GetType("EVE.Engine.Instructions." + className);
             var instance = (IInstructionHandler)Activator.CreateInstance(type);
             instance.Execute(Instruction, this);
         }

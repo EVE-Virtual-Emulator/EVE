@@ -1,4 +1,4 @@
-﻿namespace EVE.SharedKernel.Contracts
+﻿namespace EVE.SDK
 {
     public abstract class AbstractCpu
     {

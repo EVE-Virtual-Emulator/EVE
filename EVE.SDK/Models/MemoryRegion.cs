@@ -1,4 +1,4 @@
-﻿namespace EVE.SharedKernel
+﻿namespace EVE.SDK
 {
     public enum MemoryRegion
     {

@@ -1,4 +1,4 @@
-﻿using EVE.SharedKernel;
+﻿using EVE.SDK;
 
 namespace EVE.TestPlugins
 {

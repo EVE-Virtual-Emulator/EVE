@@ -13,7 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\EVE.Engine\EVE.Engine.csproj" />
-    <ProjectReference Include="..\EVE.SharedKernel\EVE.SharedKernel.csproj" />
+    <ProjectReference Include="..\EVE.SDK\EVE.SDK.csproj" />
   </ItemGroup>
 
 </Project>

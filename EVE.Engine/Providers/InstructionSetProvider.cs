@@ -1,7 +1,7 @@
 ﻿using System.Text;
 using System.Globalization;
 using System.Reflection;
-using EVE.SharedKernel;
+using EVE.SDK;
 
 namespace EVE.Engine.Providers
 {
