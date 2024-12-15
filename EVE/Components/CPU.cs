@@ -20,7 +20,7 @@ namespace EVE.Components
             Running = true;
             Memory = new Memory();
             Registers = new byte[4];
-            Pc = 0;
+            Pc = 0x4000;
             Ir = 0;
             Flags = 0;
             Instruction = new Instruction() { Opcode = 0, Operand = 0 };
@@ -31,7 +31,8 @@ namespace EVE.Components
         {
             for (int i = 0; i < program.Length; i++)
             {
-                Memory.Write(i, program[i]);
+                var address = (ushort)(i + MemoryRegion.ROM_START);
+                Memory.WriteROM(address, program[i]);
             }
         }
 
