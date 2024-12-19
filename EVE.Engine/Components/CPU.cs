@@ -7,7 +7,7 @@ namespace EVE.Engine.Components
     {
         public IMemory Memory { get; set; }
         public Instruction Instruction { get; set; }  // opcode and operand (high byte is opcode, low byte is operand)
-        public byte[] Registers { get; set; }  // R0, R1, R2, R3 (general purpose registers)
+        public byte[] Registers { get; set; }  // Eight registers, R0-R7
         public ushort Pc { get; set; }  // program counter (points to next instruction)
         public ushort Ir { get; set; }  // instruction register (holds current instruction)
         public ushort Sp { get; set; }  // stack pointer (points to top of stack, where stack hold address of instruction for RET opcode)
@@ -25,7 +25,7 @@ namespace EVE.Engine.Components
             Ir = 0;
             Sp = MemoryRegion.STACK_START;
             Flags = 0;
-            Instruction = new Instruction() { Opcode = 0, Operand = 0 };
+            Instruction = new Instruction { Value = 0 };
             _instructionSetProvider = instructionSetProvider;
         }
 
@@ -46,13 +46,12 @@ namespace EVE.Engine.Components
 
         private void Fetch()
         {
-            ushort opcode = (ushort)(Memory.Read(Pc) << 8);
-            ushort operand = Memory.Read(Pc + 1);
-            Ir = opcode |= operand;
+            ushort opcodeHigh = (ushort)(Memory.Read(Pc) << 8);
+            ushort opcodeLow = Memory.Read(Pc + 1);
+            Ir = opcodeHigh |= opcodeLow;
             Pc += 2;
 
-            Instruction.Opcode = (byte)((Ir >> 8) & 0xFF);
-            Instruction.Operand = (byte)(Ir & 0xFF);
+            Instruction.Value = Ir;
         }
 
         private string Decode()

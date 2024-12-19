@@ -6,8 +6,19 @@ namespace EVE.Engine.Instructions
     {
         public void Execute(Instruction instruction, ICpu cpu)
         {
-            cpu.Registers[instruction.HighOperand] |= cpu.Registers[instruction.LowOperand];
-            cpu.Flags = (byte)(cpu.Registers[instruction.HighOperand] == 0 ? 0x01 : 0);
+            if (instruction.Mode == AddressingMode.IMMEDIATE)
+            {
+
+            }
+            else if (instruction.Mode == AddressingMode.DIRECT)
+            {
+
+            }
+
+            //cpu.Registers[instruction.] |= cpu.Registers[instruction.LowOperand];
+            //cpu.Flags = (byte)(cpu.Registers[instruction.HighOperand] == 0 ? 0x01 : 0);
+
+            // TODO: Implement other addressing modes.
         }
     }
 }

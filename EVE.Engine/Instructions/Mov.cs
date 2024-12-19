@@ -6,7 +6,7 @@ namespace EVE.Engine.Instructions
     {
         public void Execute(Instruction instruction, ICpu cpu)
         {
-            cpu.Registers[instruction.HighOperand] = cpu.Registers[instruction.LowOperand];
+            cpu.Registers[instruction.RegisterOperand] = cpu.Registers[instruction.DataOperand];
         }
     }
 }

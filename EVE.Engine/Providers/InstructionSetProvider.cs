@@ -31,17 +31,17 @@ namespace EVE.Engine.Providers
         {
             
             string[] opcodes = File.ReadAllLines("ISA/instructionset.map");
-            Dictionary<byte, string> byteNeumonicPair = new Dictionary<byte, string>();
+            Dictionary<byte, string> machineCodeMnemonicPair = new Dictionary<byte, string>();
             foreach (var opcode in opcodes)
             {
                 var parts = opcode.Split(',');
                 var opcodeValue = parts[0].Trim().Substring(2);
-                var neumonic = parts[1].Trim();
-                neumonic = neumonic.Substring(0, 1).ToUpper() + neumonic.Substring(1).ToLower();
-                byteNeumonicPair.Add(byte.Parse(opcodeValue, NumberStyles.HexNumber), neumonic);
+                var mnemonic = parts[1].Trim();
+                mnemonic = mnemonic.Substring(0, 1).ToUpper() + mnemonic.Substring(1).ToLower();
+                machineCodeMnemonicPair.Add(byte.Parse(opcodeValue, NumberStyles.HexNumber), mnemonic);
             }
 
-            return byteNeumonicPair;
+            return machineCodeMnemonicPair;
         }
 
         private List<IInstructionHandler> GetInstructionHandlers()

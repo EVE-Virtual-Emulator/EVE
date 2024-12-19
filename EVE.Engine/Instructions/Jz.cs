@@ -6,10 +6,12 @@ namespace EVE.Engine.Instructions
     {
         public void Execute(Instruction instruction, ICpu cpu)
         {
-            if ((cpu.Flags & 0x01) != 0)
-            {
-                cpu.Pc = instruction.Operand;
-            }
+            //if ((cpu.Flags & 0x01) != 0)
+            //{
+            //    cpu.Pc = instruction.Operand;
+            //}
+
+            // TODO: Implement other addressing modes.
         }
     }
 }
