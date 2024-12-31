@@ -7,11 +7,11 @@ namespace EVE.Engine.Components
     {
         public IMemory Memory { get; set; }
         public Instruction Instruction { get; set; }  // opcode and operand (high byte is opcode, low byte is operand)
-        public byte[] Registers { get; set; }  // Eight registers, R0-R7
+        public ushort[] Registers { get; set; }  // 12 general purpose registers, R0-R11, each of which can hold a byte and be used as a base register for addressing modes
         public ushort Pc { get; set; }  // program counter (points to next instruction)
-        public ushort Ir { get; set; }  // instruction register (holds current instruction)
+        public int Ir { get; set; }  // instruction register (holds current instruction)
         public ushort Sp { get; set; }  // stack pointer (points to top of stack, where stack hold address of instruction for RET opcode)
-        public byte Flags { get; set; } // bit 0 = zero flag, bit 1 = carry flag
+        public ushort Flags { get; set; } // bit 0 = zero flag, bit 1 = carry flag
         public bool Running { get; set; }
 
         private InstructionSetProvider _instructionSetProvider;
@@ -20,7 +20,7 @@ namespace EVE.Engine.Components
         {
             Running = true;
             Memory = memory;
-            Registers = new byte[4];
+            Registers = new ushort[12];
             Pc = MemoryRegion.ROM_START;
             Ir = 0;
             Sp = MemoryRegion.STACK_START;
@@ -46,11 +46,12 @@ namespace EVE.Engine.Components
 
         private void Fetch()
         {
-            ushort opcodeHigh = (ushort)(Memory.Read(Pc) << 8);
-            ushort opcodeLow = Memory.Read(Pc + 1);
-            Ir = opcodeHigh |= opcodeLow;
-            Pc += 2;
-
+            int opcodeHighHigh = Memory.Read(Pc) << 24;
+            int opcodeHighLow = Memory.Read(Pc + 1) << 16;
+            int opcodeLowHigh = Memory.Read(Pc + 2) << 8;
+            int opcodeLowLow = Memory.Read(Pc + 3);
+            Ir = (opcodeHighHigh | opcodeHighLow | opcodeLowHigh | opcodeLowLow);
+            Pc += 4;
             Instruction.Value = Ir;
         }
 

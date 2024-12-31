@@ -4,11 +4,11 @@
     {
         IMemory Memory { get; set; }
         Instruction Instruction { get; set; }
-        byte[] Registers { get; set; }
+        ushort[] Registers { get; set; }
         ushort Pc { get; set; }
-        ushort Ir { get; set; }
+        int Ir { get; set; }
         ushort Sp { get; set; }
-        byte Flags { get; set; }
+        ushort Flags { get; set; }
         bool Running { get; set; }
 
         void Run(bool withDebug);
