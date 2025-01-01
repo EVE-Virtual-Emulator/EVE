@@ -6,7 +6,7 @@ namespace EVE.Engine.Instructions
     {
         public void Execute(Instruction instruction, ICpu cpu)
         {
-            cpu.Registers[instruction.RegisterOperand] = cpu.Registers[instruction.DataOperand];
+            throw new NotImplementedException();
         }
     }
 }

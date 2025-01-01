@@ -21,7 +21,7 @@
         /// The CPU fetches the operand from the specified memory address.
         /// This mode is simple and easy to understand but requires a memory access to fetch the operand.
         /// 
-        /// Example: LOAD R0, [0x0F] (Load the value stored at memory address 0x0F into register R0)
+        /// Example: LOAD R0, [0x0F] (Load the value stored at memory address (or register address) 0x0F into register R0)
         /// </summary>
         public const byte DIRECT = 0x01;
 
@@ -32,6 +32,7 @@
         /// This mode allows for more flexible and dynamic memory access but requires two memory accesses.
         /// 
         /// Example: LOAD R0, ([R2]) (Load the value stored at the memory address pointed to by register R3 into register R0)
+        /// Example: LOAD R0, [[0x0F]] (Load the value stored at the memory address pointed to by memory address 0x0F into register R0)
         /// </summary>
         public const byte INDIRECT = 0x02;
 
