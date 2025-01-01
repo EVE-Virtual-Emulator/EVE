@@ -4,13 +4,51 @@ namespace EVE.Engine.Components
 {
     public class Memory : IMemory
     {
+        public ushort[] Registers { get; set; }
+        public ushort Flags { get; set; }
+        public ushort Pc { get; set; }
+        public int Ir { get; set; }
+        public ushort Sp { get; set; }
+
         private byte[] _memory;
 
         public Memory()
         {
+            Registers = new ushort[12];
+            Flags = 0;
+            Pc = MemoryRegion.ROM_START;
+            Ir = 0;
+            Sp = MemoryRegion.STACK_START;
             _memory = new byte[UInt16.MaxValue];
         }
 
+        #region Registers Operations
+        public dynamic? ReadRegister(ushort address)
+        {
+            switch (address)
+            {
+                case ushort n when (n >= MemoryRegion.R0 && n <= MemoryRegion.R11):
+                    return Registers[address];
+                case ushort n when (n == MemoryRegion.PC):
+                    return Pc;
+                case ushort n when (n == MemoryRegion.SP):
+                    return Sp;
+                case ushort n when (n == MemoryRegion.FLAGS):
+                    return Flags;
+                case ushort n when (n == MemoryRegion.IR):
+                    return Ir;
+                default:
+                    return null;
+            }
+        }
+
+        public void WriteRegister(ushort address, dynamic value)
+        {
+
+        }
+        #endregion
+
+        #region System Memory Operations
         public void LoadProgram(byte[] program)
         {
             for (int i = 0; i < program.Length; i++)
@@ -100,5 +138,6 @@ namespace EVE.Engine.Components
         {
             _memory[address] = value;
         }
+        #endregion
     }
 }
