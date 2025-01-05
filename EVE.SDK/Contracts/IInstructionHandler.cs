@@ -1,6 +1,4 @@
-﻿using EVE.SDK.Contracts.Cpu;
-
-namespace EVE.SDK
+﻿namespace EVE.SDK
 {
     /// <summary>
     /// Defines a handler for executing instructions on a CPU.
