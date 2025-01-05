@@ -1,4 +1,5 @@
 ﻿using EVE.SDK;
+using EVE.SDK.Contracts.Cpu;
 
 namespace EVE.Engine.Instructions
 {

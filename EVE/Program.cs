@@ -1,6 +1,7 @@
 ﻿global using EVE.Engine.Components;
 global using EVE.Engine.Providers;
 global using EVE.SDK;
+using EVE.SDK.Contracts.Cpu;
 
 namespace EVE
 {

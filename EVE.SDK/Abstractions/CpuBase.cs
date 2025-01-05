@@ -1,4 +1,6 @@
-﻿namespace EVE.SDK
+﻿using EVE.SDK.Contracts.Cpu;
+
+namespace EVE.SDK
 {
     /// <summary>
     /// Represents the base class for a CPU, providing core functionality for running instructions.
