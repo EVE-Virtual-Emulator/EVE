@@ -5,10 +5,6 @@ namespace EVE.Engine.Components
 {
     public class Cpu : CpuBase
     {
-        //public IMemory Memory { get; set; }
-        //public Instruction Instruction { get; set; }
-        //public bool Running { get; set; }
-
         private InstructionSetProvider _instructionSetProvider;
 
         public Cpu(IMemory memory, InstructionSetProvider instructionSetProvider): base(memory)
@@ -91,4 +87,3 @@ namespace EVE.Engine.Components
 }
 
 // TODO: Implement Bus component to connect CPU and Memory components.  Instructions will be transferred on the Bus.
-// TODO: Fix Indirect addressing mode to also allow for address of register to also be used as operand.
