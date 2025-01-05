@@ -6,6 +6,13 @@
         public IMemory Memory { get; set; }
         public Instruction Instruction { get; set; }
 
+        public CpuBase(IMemory memory)
+        {
+            Running = true;
+            Memory = memory;
+            Instruction = new Instruction { Value = 0 };
+        }
+
         public void Run(bool withDebug)
         {
             while (Running)
@@ -27,6 +34,3 @@
         protected abstract void DumpRegisters();
     }
 }
-
-// TODO: Switch ICpu to inherit from AbstractCpu, so that it can use the strategy pattern to implement the Fetch, Decode, Execute, and DumpRegisters methods.
-// This will allow other developers to create their own CPU implementations by inheriting from AbstractCpu and implementing the abstract methods.

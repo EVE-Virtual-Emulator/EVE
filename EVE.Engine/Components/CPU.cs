@@ -3,19 +3,16 @@ using EVE.Engine.Providers;
 
 namespace EVE.Engine.Components
 {
-    public class Cpu : ICpu
+    public class Cpu : CpuBase
     {
-        public IMemory Memory { get; set; }
-        public Instruction Instruction { get; set; }
-        public bool Running { get; set; }
+        //public IMemory Memory { get; set; }
+        //public Instruction Instruction { get; set; }
+        //public bool Running { get; set; }
 
         private InstructionSetProvider _instructionSetProvider;
 
-        public Cpu(IMemory memory, InstructionSetProvider instructionSetProvider)
+        public Cpu(IMemory memory, InstructionSetProvider instructionSetProvider): base(memory)
         {
-            Running = true;
-            Memory = memory;
-            Instruction = new Instruction { Value = 0 };
             _instructionSetProvider = instructionSetProvider;
         }
 
@@ -34,7 +31,7 @@ namespace EVE.Engine.Components
             }
         }
 
-        private void Fetch()
+        protected override void Fetch()
         {
             int highBits = Memory.Read(Memory.Pc) << 16;
             int lowBits = Memory.Read(Memory.Pc + 1);
@@ -43,7 +40,7 @@ namespace EVE.Engine.Components
             Instruction.Value = Memory.Read(MemoryRegion.IR);
         }
 
-        private string Decode()
+        protected override string Decode()
         {
             foreach (var pair in _instructionSetProvider.MachineCodeMnemonicPair)
             {
@@ -56,7 +53,7 @@ namespace EVE.Engine.Components
             return string.Empty;
         }
 
-        private void Execute(string className)
+        protected override void Execute(string className)
         {
             
             foreach (var instructionHandler in _instructionSetProvider.InstructionHandlers)
@@ -78,7 +75,7 @@ namespace EVE.Engine.Components
             Memory.Write(MemoryRegion.PC, Memory.Pc + 2);
         }
 
-        private void DumpRegisters()
+        protected override void DumpRegisters()
         {
             Console.Write($"PC: {Memory.Read(MemoryRegion.PC)} ");
             for (int i = 0; i < Memory.Register.Length; i++)
