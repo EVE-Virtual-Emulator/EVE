@@ -8,11 +8,11 @@ namespace EVE
     {
         public static void Main(string[] args)
         {
-            byte[] program =
+            short[] program =
             {
-                0x01, 0x00, 0x00, 0xFF, // Load 255 into R0
-                0x01, 0x00, 0x00, 0x01, // Load 1 into R1
-                0x0D, 0x00, 0x00, 0x00  // Halt
+                0x0100, 0x00FF, // Load 255 into R0
+                0x0110, 0x0001, // Load 1 into R1
+                0x0D00, 0x0000  // Halt
             };
 
             IMemory memory = new Memory();

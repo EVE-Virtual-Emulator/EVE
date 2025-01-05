@@ -10,7 +10,7 @@ namespace EVE.Engine.Components
         public int Ir { get; set; }
         public ushort Sp { get; set; }
 
-        private byte[] _memory;
+        private short[] _memory;
 
         public Memory()
         {
@@ -19,10 +19,10 @@ namespace EVE.Engine.Components
             Pc = MemoryRegion.ROM_START;
             Ir = 0;
             Sp = MemoryRegion.STACK_START;
-            _memory = new byte[UInt16.MaxValue];
+            _memory = new short[UInt16.MaxValue];
         }
 
-        public void LoadProgram(byte[] program)
+        public void LoadProgram(short[] program)
         {
             for (int i = 0; i < program.Length; i++)
             {
@@ -45,13 +45,13 @@ namespace EVE.Engine.Components
                     return Flags;
                 case int n when (n == MemoryRegion.IR):
                     return Ir;
-                case int n when (n >= (int)MemoryRegion.ROM_START && n <= (int)MemoryRegion.ROM_END):
+                case int n when (n >= (int)MemoryRegion.ROM_START && n <= MemoryRegion.ROM_END):
                     return ReadROM(address);
-                case int n when (n >= (int)MemoryRegion.SYSTEM_RAM_START && n <= (int)MemoryRegion.SYSTEM_RAM_END):
+                case int n when (n >= (int)MemoryRegion.SYSTEM_RAM_START && n <= MemoryRegion.SYSTEM_RAM_END):
                     return ReadSystemRAM(address);
-                case int n when (n >= (int)MemoryRegion.VRAM_START && n <= (int)MemoryRegion.VRAM_END):
+                case int n when (n >= (int)MemoryRegion.VRAM_START && n <= MemoryRegion.VRAM_END):
                     return ReadVRAM(address);
-                case int n when (n >= (int)MemoryRegion.STACK_START && n <= (int)MemoryRegion.STACK_END):
+                case int n when (n >= (int)MemoryRegion.STACK_START && n <= MemoryRegion.STACK_END):
                     return ReadStack(address);
                 default:
                     return _memory[address];
@@ -97,42 +97,42 @@ namespace EVE.Engine.Components
             }
         }
 
-        private byte ReadROM(int address)
+        private short ReadROM(int address)
         {
             return _memory[address];
         }
 
-        private byte ReadSystemRAM(int address)
+        private short ReadSystemRAM(int address)
         {
             return _memory[address];
         }
 
-        private byte ReadVRAM(int address)
+        private short ReadVRAM(int address)
         {
             return _memory[address];
         }
 
-        private byte ReadStack(int address)
+        private short ReadStack(int address)
         {
             return _memory[address];
         }
 
-        private void WriteROM(int address, byte value)
+        private void WriteROM(int address, short value)
         {
             _memory[address] = value;
         }
 
-        private void WriteSystemRAM(int address, byte value)
+        private void WriteSystemRAM(int address, short value)
         {
             _memory[address] = value;
         }
 
-        private void WriteVRAM(int address, byte value)
+        private void WriteVRAM(int address, short value)
         {
             _memory[address] = value;
         }
 
-        private void WriteStack(int address, byte value)
+        private void WriteStack(int address, short value)
         {
             _memory[address] = value;
         }

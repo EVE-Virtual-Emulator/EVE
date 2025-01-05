@@ -1,9 +1,4 @@
 ﻿using EVE.SDK;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EVE.Engine.Components
 {
@@ -11,6 +6,11 @@ namespace EVE.Engine.Components
     {
         public dynamic Read(ushort address)
         {
+            if (address < MemoryRegion.ROM_START || address > MemoryRegion.ROM_END)
+            {
+                throw new ArgumentOutOfRangeException(nameof(address));
+            }
+
             throw new NotImplementedException();
         }
 

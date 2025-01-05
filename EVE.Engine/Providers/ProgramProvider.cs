@@ -33,7 +33,7 @@ namespace EVE.Engine.Providers
             throw new NotImplementedException();
         }
 
-        private byte[] GetProgramData()
+        private short[] GetProgramData()
         {
             // TODO: Read bytes from file, not including header, and disregard commas, spaces, and newlines.
             // Example: 0x01, 0x05, 0x01, 0x17, 0x03, 0x01, 0x08, 0x00, 0x0D -> reads into byte array { 0x01, 0x05, 0x01, 0x17, 0x03, 0x01, 0x08, 0x00, 0x0D }

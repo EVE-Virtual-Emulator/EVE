@@ -2,7 +2,7 @@
 {
     public interface IBus
     {
-        byte Read(ushort address);
-        void Write(ushort address, byte data);
+        dynamic Read(ushort address);
+        void Write(ushort address, dynamic data);
     }
 }

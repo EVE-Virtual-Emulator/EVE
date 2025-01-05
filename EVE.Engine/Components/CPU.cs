@@ -36,12 +36,10 @@ namespace EVE.Engine.Components
 
         private void Fetch()
         {
-            int opcodeHighHigh = Memory.Read(Memory.Pc) << 24;
-            int opcodeHighLow = Memory.Read(Memory.Pc + 1) << 16;
-            int opcodeLowHigh = Memory.Read(Memory.Pc + 2) << 8;
-            int opcodeLowLow = Memory.Read(Memory.Pc + 3);
-            Memory.Write(MemoryRegion.IR, opcodeHighHigh | opcodeHighLow | opcodeLowHigh | opcodeLowLow);
-            Memory.Write(MemoryRegion.PC, Memory.Pc + 4);
+            int highBits = Memory.Read(Memory.Pc) << 16;
+            int lowBits = Memory.Read(Memory.Pc + 1);
+            Memory.Write(MemoryRegion.IR, highBits | lowBits);   // Load instruction into IR
+            IncrementPc();
             Instruction.Value = Memory.Read(MemoryRegion.IR);
         }
 
@@ -73,6 +71,11 @@ namespace EVE.Engine.Components
             Type type = Type.GetType("EVE.Engine.Instructions." + className);
             var instance = (IInstructionHandler)Activator.CreateInstance(type);
             instance.Execute(Instruction, this);
+        }
+
+        private void IncrementPc()
+        {
+            Memory.Write(MemoryRegion.PC, Memory.Pc + 2);
         }
 
         private void DumpRegisters()

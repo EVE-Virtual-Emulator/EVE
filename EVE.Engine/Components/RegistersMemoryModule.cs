@@ -17,6 +17,12 @@ namespace EVE.Engine.Components
             set { _registers[0] = value; }
         }
 
+        public ushort R1
+        {
+            get { return _registers[1]; }
+            set { _registers[1] = value; }
+        }
+
         public ushort R2
         {
             get { return _registers[2]; }
@@ -84,12 +90,100 @@ namespace EVE.Engine.Components
 
         public dynamic Read(ushort address)
         {
-            throw new NotImplementedException();
+            switch (address)
+            {
+                case MemoryRegion.PC:
+                    return Pc;
+                case MemoryRegion.IR:
+                    return Ir;
+                case MemoryRegion.SP:
+                    return Sp;
+                case MemoryRegion.FLAGS:
+                    return Flags;
+                case MemoryRegion.R0:
+                    return R0;
+                case MemoryRegion.R1:
+                    return R1;
+                case MemoryRegion.R2:
+                    return R2;
+                case MemoryRegion.R3:
+                    return R3;
+                case MemoryRegion.R4:
+                    return R4;
+                case MemoryRegion.R5:
+                    return R5;
+                case MemoryRegion.R6:
+                    return R6;
+                case MemoryRegion.R7:
+                    return R7;
+                case MemoryRegion.R8:
+                    return R8;
+                case MemoryRegion.R9:
+                    return R9;
+                case MemoryRegion.R10:
+                    return R10;
+                case MemoryRegion.R11:
+                    return R11;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(address));
+            }
         }
 
         public void Write(ushort address, dynamic value)
         {
-            throw new NotImplementedException();
+            switch (address)
+            {
+                case MemoryRegion.PC:
+                    Pc = value;
+                    break;
+                case MemoryRegion.IR:
+                    Ir = value;
+                    break;
+                case MemoryRegion.SP:
+                    Sp = value;
+                    break;
+                case MemoryRegion.FLAGS:
+                    Flags = value;
+                    break;
+                case MemoryRegion.R0:
+                    R0 = value;
+                    break;
+                case MemoryRegion.R1:
+                    R1 = value;
+                    break;
+                case MemoryRegion.R2:
+                    R2 = value;
+                    break;
+                case MemoryRegion.R3:
+                    R3 = value;
+                    break;
+                case MemoryRegion.R4:
+                    R4 = value;
+                    break;
+                case MemoryRegion.R5:
+                    R5 = value;
+                    break;
+                case MemoryRegion.R6:
+                    R6 = value;
+                    break;
+                case MemoryRegion.R7:
+                    R7 = value;
+                    break;
+                case MemoryRegion.R8:
+                    R8 = value;
+                    break;
+                case MemoryRegion.R9:
+                    R9 = value;
+                    break;
+                case MemoryRegion.R10:
+                    R10 = value;
+                    break;
+                case MemoryRegion.R11:
+                    R11 = value;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(address));
+            }
         }
     }
 }

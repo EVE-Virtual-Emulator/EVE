@@ -1,8 +1,10 @@
 ﻿namespace EVE.SDK
 {
-    public abstract class AbstractCpu
+    public abstract class CpuBase : ICpu
     {
         public bool Running { get; set; }
+        public IMemory Memory { get; set; }
+        public Instruction Instruction { get; set; }
 
         public void Run(bool withDebug)
         {
