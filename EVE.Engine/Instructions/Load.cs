@@ -9,16 +9,13 @@ namespace EVE.Engine.Instructions
             switch (instruction.Mode) 
             {
                 case AddressingMode.IMMEDIATE:
-                    cpu.Memory.Register[instruction.RegisterOperand] = instruction.DataOperand;
+                    cpu.Memory.Register[instruction.RegisterOperand] = (ushort)instruction.DataOperand;
                     break;
                 case AddressingMode.DIRECT:
-                    cpu.Memory.Register[instruction.RegisterOperand] = cpu.Memory.Read(instruction.DataOperand);
+                    cpu.Memory.Register[instruction.RegisterOperand] = (ushort)cpu.Memory.Read(instruction.DataOperand);
                     break;
                 case AddressingMode.INDIRECT:
-                    cpu.Memory.Register[instruction.RegisterOperand] = cpu.Memory.Read(cpu.Memory.Read(instruction.DataOperand));
-                    break;
-                case AddressingMode.INDEXED:
-                    cpu.Memory.Register[instruction.RegisterOperand] = cpu.Memory.Read(cpu.Memory.Read(instruction.DataOperand) + instruction.DataOperand);
+                    cpu.Memory.Register[instruction.RegisterOperand] = (ushort)cpu.Memory.Read(cpu.Memory.Read(instruction.DataOperand));
                     break;
                 default:
                     break;

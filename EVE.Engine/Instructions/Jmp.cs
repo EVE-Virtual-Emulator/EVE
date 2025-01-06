@@ -6,9 +6,7 @@ namespace EVE.Engine.Instructions
     {
         public void Execute(Instruction instruction, ICpu cpu)
         {
-            //cpu.Pc = instruction.Operand;
-
-            // TODO: Implement other addressing modes.
+            cpu.Memory.Pc = instruction.DataOperand;
         }
     }
 }

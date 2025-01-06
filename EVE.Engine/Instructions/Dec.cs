@@ -6,10 +6,20 @@ namespace EVE.Engine.Instructions
     {
         public void Execute(Instruction instruction, ICpu cpu)
         {
-            //cpu.Registers[instruction.HighOperand] |= cpu.Registers[instruction.LowOperand];
-            //cpu.Flags = (byte)(cpu.Registers[instruction.HighOperand] == 0 ? 0x01 : 0);
-
-            // TODO: Implement other addressing modes.
+            switch (instruction.Mode)
+            {
+                case AddressingMode.IMMEDIATE:
+                    var result = cpu.Memory.Register[instruction.RegisterOperand]--;
+                    if (result == 0)
+                        cpu.Memory.Flags |= 0x0001;
+                    if (result < 0)
+                        cpu.Memory.Flags |= 0x0004;
+                    if (result == ushort.MaxValue)
+                        cpu.Memory.Flags |= 0x0008;
+                    break;
+                default:
+                    throw new Exception($"Addressing mode {instruction.Mode} is not supported.");
+            }
         }
     }
 }

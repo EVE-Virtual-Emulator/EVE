@@ -5,7 +5,7 @@ namespace EVE.Engine.Components
     public class Memory : IMemory
     {
         public ushort[] Register { get; set; }
-        public ushort Flags { get; set; }
+        public ushort Flags { get; set; } // 0x0001 = zero flag (Z) 0x0002 = carry flag (C) 0x0004 = negative flag (N) 0x0008 = overflow flag (V)
         public ushort Pc { get; set; }
         public int Ir { get; set; }
         public ushort Sp { get; set; }

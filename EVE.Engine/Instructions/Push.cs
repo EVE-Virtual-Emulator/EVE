@@ -6,10 +6,7 @@ namespace EVE.Engine.Instructions
     {
         public void Execute(Instruction instruction, ICpu cpu)
         {
-            //cpu.Memory.Write(cpu.Sp, instruction.LowOperand);
-            //cpu.Sp--;
-
-            // TODO: Implement other addressing modes.
+            throw new NotImplementedException();
         }
     }
 }

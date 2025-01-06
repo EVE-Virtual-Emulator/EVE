@@ -11,17 +11,17 @@ namespace EVE.Engine.Instructions
                 case AddressingMode.IMMEDIATE:
                     {
                         ushort result = (ushort)(cpu.Memory.Register[instruction.RegisterOperand] + instruction.DataOperand);
+                        if (result == 0)
+                        {
+                            cpu.Memory.Flags |= 0x0001;
+                        }
+                        if (result < 0)
+                        {
+                            cpu.Memory.Flags |= 0x0004;
+                        }
                         if (result > 0xFFFF)
                         {
-                            cpu.Memory.Flags = 0x02;
-                        }
-                        else if (result == 0)
-                        {
-                            cpu.Memory.Flags = 0x01;
-                        }
-                        else
-                        {
-                            cpu.Memory.Flags = 0x00;
+                            cpu.Memory.Flags |= 0x0008;
                         }
 
                         cpu.Memory.Register[instruction.RegisterOperand] = result;
@@ -31,17 +31,17 @@ namespace EVE.Engine.Instructions
                 case AddressingMode.DIRECT:
                     {
                         ushort result = (ushort)(cpu.Memory.Register[instruction.RegisterOperand] + cpu.Memory.Read(instruction.DataOperand));
+                        if (result == 0)
+                        {
+                            cpu.Memory.Flags |= 0x0001;
+                        }
+                        if (result < 0)
+                        {
+                            cpu.Memory.Flags |= 0x0004;
+                        }
                         if (result > 0xFFFF)
                         {
-                            cpu.Memory.Flags = 0x02;
-                        }
-                        else if (result == 0)
-                        {
-                            cpu.Memory.Flags = 0x01;
-                        }
-                        else
-                        {
-                            cpu.Memory.Flags = 0x00;
+                            cpu.Memory.Flags |= 0x0008;
                         }
 
                         cpu.Memory.Register[instruction.RegisterOperand] = result;
@@ -51,37 +51,17 @@ namespace EVE.Engine.Instructions
                 case AddressingMode.INDIRECT:
                     {
                         ushort result = (ushort)(cpu.Memory.Register[instruction.RegisterOperand] + cpu.Memory.Read(cpu.Memory.Read(instruction.DataOperand)));
+                        if (result == 0)
+                        {
+                            cpu.Memory.Flags |= 0x0001;
+                        }
+                        if (result < 0)
+                        {
+                            cpu.Memory.Flags |= 0x0004;
+                        }
                         if (result > 0xFFFF)
                         {
-                            cpu.Memory.Flags = 0x02;
-                        }
-                        else if (result == 0)
-                        {
-                            cpu.Memory.Flags = 0x01;
-                        }
-                        else
-                        {
-                            cpu.Memory.Flags = 0x00;
-                        }
-
-                        cpu.Memory.Register[instruction.RegisterOperand] = result;
-                        break;
-                    }
-
-                case AddressingMode.INDEXED:
-                    {
-                        ushort result = (ushort)(cpu.Memory.Register[instruction.RegisterOperand] + cpu.Memory.Read(cpu.Memory.Register[instruction.DataOperand] + instruction.DataOperand));
-                        if (result > 0xFFFF)
-                        {
-                            cpu.Memory.Flags = 0x02;
-                        }
-                        else if (result == 0)
-                        {
-                            cpu.Memory.Flags = 0x01;
-                        }
-                        else
-                        {
-                            cpu.Memory.Flags = 0x00;
+                            cpu.Memory.Flags |= 0x0008;
                         }
 
                         cpu.Memory.Register[instruction.RegisterOperand] = result;

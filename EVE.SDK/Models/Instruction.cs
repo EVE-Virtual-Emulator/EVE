@@ -30,9 +30,19 @@
         public byte Mode { get => (byte)((Value >> 18) & 0x03); }
 
         /// <summary>
+        /// --------------*----------------- next 1 bit
+        /// Gets the display mode extracted from the instruction value.
+        /// 
+        /// Bit = 0: Display terminal output in text mode; Bit = 1: Display terminal output in graphics mode.
+        /// </summary>
+        public byte DisplayMode { get => (byte)((Value >> 17) & 0x01); }
+
+        /// <summary>
         /// ----------------*************** last 16 bits
         /// Gets the data operand extracted from the instruction value.
+        /// 
+        /// Leading bit = 0: Positive value; Leading bit = 1: Negative value.
         /// </summary>
-        public ushort DataOperand { get => (ushort)(Value & 0xFFFF); }
+        public dynamic DataOperand { get => (ushort)(Value >> 15) > 0 ? (short)(Value & 0xFFFF) : (ushort)(Value & 0xFFFF); }
     }
 }

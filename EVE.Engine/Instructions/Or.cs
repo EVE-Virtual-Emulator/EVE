@@ -6,19 +6,38 @@ namespace EVE.Engine.Instructions
     {
         public void Execute(Instruction instruction, ICpu cpu)
         {
-            if (instruction.Mode == AddressingMode.IMMEDIATE)
+            switch (instruction.Mode)
             {
+                case AddressingMode.IMMEDIATE:
+                    {
+                        var result = cpu.Memory.Register[instruction.RegisterOperand] |= instruction.DataOperand;
+                        if (result == 0)
+                        {
+                            cpu.Memory.Flags |= 0x0001;
+                        }
+                    }
+                    break;
+                case AddressingMode.DIRECT:
+                    {
+                        var result = cpu.Memory.Register[instruction.RegisterOperand] |= cpu.Memory.Read(instruction.DataOperand);
+                        if (result == 0)
+                        {
+                            cpu.Memory.Flags |= 0x0001;
+                        }
 
+                        break;
+                    }
+                case AddressingMode.INDIRECT:
+                    {
+                        var result = cpu.Memory.Register[instruction.RegisterOperand] |= cpu.Memory.Read(cpu.Memory.Read(instruction.DataOperand));
+                        if (result == 0)
+                        {
+                            cpu.Memory.Flags |= 0x0001;
+                        }
+
+                        break;
+                    }
             }
-            else if (instruction.Mode == AddressingMode.DIRECT)
-            {
-
-            }
-
-            //cpu.Registers[instruction.] |= cpu.Registers[instruction.LowOperand];
-            //cpu.Flags = (byte)(cpu.Registers[instruction.HighOperand] == 0 ? 0x01 : 0);
-
-            // TODO: Implement other addressing modes.
         }
     }
 }
