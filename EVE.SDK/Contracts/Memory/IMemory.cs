@@ -49,5 +49,8 @@
         /// <param name="address">The memory address to write to.</param>
         /// <param name="value">The value to write.</param>
         void Write(int address, dynamic value);
+
+        short PopStack();
+        void PushStack(short value);
     }
 }

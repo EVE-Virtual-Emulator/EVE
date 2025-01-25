@@ -51,8 +51,6 @@ namespace EVE.Engine.Components
                     return ReadSystemRAM(address);
                 case int n when (n >= (int)MemoryRegion.VRAM_START && n <= MemoryRegion.VRAM_END):
                     return ReadVRAM(address);
-                case int n when (n >= (int)MemoryRegion.STACK_START && n <= MemoryRegion.STACK_END):
-                    return ReadStack(address);
                 default:
                     return _memory[address];
             }
@@ -88,13 +86,23 @@ namespace EVE.Engine.Components
                 case int n when (n >= (int)MemoryRegion.VRAM_START && n <= (int)MemoryRegion.VRAM_END):
                     WriteVRAM(address, value);
                     break;
-                case int n when (n <= (int)MemoryRegion.STACK_START && n >= (int)MemoryRegion.STACK_END):
-                    WriteStack(address, value);
-                    break;
                 default:
                     _memory[address] = value;
                     break;
             }
+        }
+
+        public short PopStack()
+        {
+            short value = _memory[Sp];
+            --Sp;
+            return value;
+        }
+
+        public void PushStack(short value)
+        {
+            ++Sp;
+            _memory[Sp] = value;
         }
 
         private short ReadROM(int address)
@@ -112,11 +120,6 @@ namespace EVE.Engine.Components
             return _memory[address];
         }
 
-        private short ReadStack(int address)
-        {
-            return _memory[address];
-        }
-
         private void WriteROM(int address, short value)
         {
             _memory[address] = value;
@@ -128,11 +131,6 @@ namespace EVE.Engine.Components
         }
 
         private void WriteVRAM(int address, short value)
-        {
-            _memory[address] = value;
-        }
-
-        private void WriteStack(int address, short value)
         {
             _memory[address] = value;
         }

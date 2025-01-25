@@ -6,7 +6,7 @@ namespace EVE.Engine.Instructions
     {
         public void Execute(Instruction instruction, ICpu cpu)
         {
-            throw new NotImplementedException();
+            cpu.Memory.PushStack(instruction.DataOperand);
         }
     }
 }

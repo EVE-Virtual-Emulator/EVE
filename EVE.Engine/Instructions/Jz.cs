@@ -8,7 +8,20 @@ namespace EVE.Engine.Instructions
         {
             if ((cpu.Memory.Flags & 0x0001) == 0)
             {
-                cpu.Memory.Pc = instruction.DataOperand;
+                switch(instruction.Mode)
+                {
+                    case AddressingMode.IMMEDIATE:
+                        cpu.Memory.Pc = instruction.DataOperand;
+                        break;
+                    case AddressingMode.DIRECT:
+                        cpu.Memory.Pc = cpu.Memory.Read(instruction.DataOperand);
+                        break;
+                    case AddressingMode.INDIRECT:
+                        cpu.Memory.Pc = cpu.Memory.Read(cpu.Memory.Read(instruction.DataOperand));
+                        break;
+                    default:
+                        break;
+                }
             }
         }
     }
